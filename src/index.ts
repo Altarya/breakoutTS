@@ -31,7 +31,8 @@ for (let c = 0; c < brickColumnCount; c++) {
         bricks[c][r] = { x: 0, y: 0, isAlive: true};
     }
 }
-
+let score = 0
+let victory = false
 
 function drawLoop() {
     if(frameLock == false) {
@@ -46,6 +47,15 @@ function drawLoop() {
         ctx.fillStyle = 'green'
         ctx.textAlign = 'left'
         ctx.fillText("FPS: "+FPS, 10, 20)
+        ctx.closePath()
+
+        //Score counter
+        ctx.beginPath()
+        ctx.font = "20px 'Pixeloid'"
+        ctx.fillStyle = 'green'
+        ctx.textAlign = 'right'
+        const scoreS = String("Score: "+score)
+        ctx.fillText(scoreS, canvas.width-scoreS.length, 20)
         ctx.closePath()
 
         //Draw ball
@@ -67,7 +77,8 @@ function drawLoop() {
         ctx.strokeRect(0, 0, canvas.width-1, canvas.height-1)
         ctx.closePath()
 
-        //Draw Bricks
+        //Draw Bricks & Victory check
+        victory = true
         for (let c = 0; c < brickColumnCount; c++) {
             for (let r = 0; r < brickRowCount; r++) {
                 if(bricks[c][r].isAlive) {
@@ -77,6 +88,7 @@ function drawLoop() {
                     ctx.strokeStyle = 'green'
                     ctx.strokeRect(bricks[c][r].x, bricks[c][r].y, brickW, brickH)
                     ctx.closePath()
+                    victory = false
                 }
             }
         }
@@ -100,11 +112,12 @@ function drawLoop() {
                 if (ballX > brick.x && ballX < brick.x + brickW && ballY > brick.y && ballY < brick.y + brickH && brick.isAlive) {
                     ballDY = -ballDY
                     brick.isAlive = false
+                    score++
                 }
             }
         }
 
-        if(!gameOver) {
+        if(!gameOver && !victory) {
             //Move check
             if (moveRight && paddleX - paddleSpeed < canvas.width - paddleW) {
                 paddleX += paddleSpeed
@@ -115,12 +128,19 @@ function drawLoop() {
             //Move ball
             ballX += ballDX
             ballY += ballDY
-        } else {
+        } else if (!victory) {
             ctx.beginPath()
             ctx.font = "40px 'Pixeloid'"
             ctx.fillStyle = 'green'
             ctx.textAlign = 'center'
             ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2)
+            ctx.closePath()
+        } else {
+            ctx.beginPath()
+            ctx.font = "40px 'Pixeloid'"
+            ctx.fillStyle = 'green'
+            ctx.textAlign = 'center'
+            ctx.fillText("YOU WIN", canvas.width/2, canvas.height/2)
             ctx.closePath()
         }
 
