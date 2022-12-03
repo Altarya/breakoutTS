@@ -16,6 +16,7 @@ let paddleY = canvas.height - paddleH
 let moveLeft = false
 let moveRight = false
 let paddleSpeed = 7
+let gameOver = false
 
 function drawLoop() {
     if(frameLock == false) {
@@ -28,6 +29,7 @@ function drawLoop() {
         ctx.beginPath()
         ctx.font = "20px 'Pixeloid'"
         ctx.fillStyle = 'green'
+        ctx.textAlign = 'left'
         ctx.fillText("FPS: "+FPS, 10, 50)
         ctx.closePath()
 
@@ -45,25 +47,36 @@ function drawLoop() {
         ctx.closePath()
 
         //Edge colision check
-        if (ballY + ballDY < ballRadious || ballY + ballDY > canvas.height - ballRadious) {
+        if (ballY + ballDY < ballRadious) {
             ballDY = -ballDY
+        } else if (ballY + ballDY > canvas.height - ballRadious) {
+            gameOver = true
         }
         if (ballX + ballDX < ballRadious || ballX + ballDX > canvas.width - ballRadious) {
             ballDX = -ballDX
         }
 
-        //Move check
-        if (moveRight && paddleX - paddleSpeed < canvas.width - paddleW) {
-            paddleX += paddleSpeed
-        } else if (moveLeft && paddleX + paddleSpeed > 0 + paddleW) {
-            paddleX -= paddleSpeed
+        if(!gameOver) {
+            //Move check
+            if (moveRight && paddleX - paddleSpeed < canvas.width - paddleW) {
+                paddleX += paddleSpeed
+            } else if (moveLeft && paddleX + paddleSpeed > 0 + paddleW) {
+                paddleX -= paddleSpeed
+            }
+
+            //Move ball
+            ballX += ballDX
+            ballY += ballDY
+        } else {
+            ctx.beginPath()
+            ctx.font = "40px 'Pixeloid'"
+            ctx.fillStyle = 'green'
+            ctx.textAlign = 'center'
+            ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2)
+            ctx.closePath()
         }
 
-        //Move ball
-        ballX += ballDX
-        ballY += ballDY
         frameCount++
-
         frameLock = false
     }
 }
