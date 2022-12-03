@@ -149,6 +149,8 @@ function FMODmain() {
                     gameOver = true
                     playSound('event:/lose')
                 } else {
+                    ballDY = -ballDY
+                    playSound('event:/boop')
                     lives--
                 }
             }
