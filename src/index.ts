@@ -17,6 +17,21 @@ let moveLeft = false
 let moveRight = false
 let paddleSpeed = 7
 let gameOver = false
+const brickRowCount = 3
+const brickColumnCount = 5
+const brickW = 75
+const brickH = 20
+const brickPadding = 10
+const brickOffsetTop = 30
+const brickOffsetLeft = 30
+const bricks: {x: number, y: number}[][] = new Array();
+for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0 };
+    }
+}
+
 
 function drawLoop() {
     if(frameLock == false) {
@@ -52,7 +67,21 @@ function drawLoop() {
         ctx.strokeRect(0, 0, canvas.width-1, canvas.height-1)
         ctx.closePath()
 
-        //Edge colision check
+        //Draw Bricks
+        for (let c = 0; c < brickColumnCount; c++) {
+            for (let r = 0; r < brickRowCount; r++) {
+                const brickX = c * (brickW + brickPadding) + brickOffsetLeft;
+                const brickY = r * (brickH + brickPadding) + brickOffsetTop;
+                bricks[c][r].x = brickX
+                bricks[c][r].y = brickY
+                ctx.beginPath()
+                ctx.strokeStyle = 'green'
+                ctx.strokeRect(brickX, brickY, brickW, brickH)
+                ctx.closePath()
+            }
+        }
+
+        //Colision check
         if (ballY + ballDY < ballRadious) {
             ballDY = -ballDY
         } else if (ballY + ballDY > canvas.height - ballRadious) {
@@ -65,12 +94,20 @@ function drawLoop() {
         if (ballX + ballDX < ballRadious || ballX + ballDX > canvas.width - ballRadious) {
             ballDX = -ballDX
         }
+        for (let c = 0; c < brickColumnCount; c++) {
+            for (let r = 0; r < brickRowCount; r++) {
+                const brick = bricks[c][r]
+                if (ballX > brick.x && ballX < brick.x + brickW && ballY > brick.y && ballY < brick.y + brickH) {
+                    ballDY = -ballDY
+                }
+            }
+        }
 
         if(!gameOver) {
             //Move check
             if (moveRight && paddleX - paddleSpeed < canvas.width - paddleW) {
                 paddleX += paddleSpeed
-            } else if (moveLeft && paddleX + paddleSpeed > 0 + paddleW) {
+            } else if (moveLeft && paddleX + paddleSpeed > 0) {
                 paddleX -= paddleSpeed
             }
 
