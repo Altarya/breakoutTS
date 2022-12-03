@@ -30,7 +30,7 @@ function drawLoop() {
         ctx.font = "20px 'Pixeloid'"
         ctx.fillStyle = 'green'
         ctx.textAlign = 'left'
-        ctx.fillText("FPS: "+FPS, 10, 50)
+        ctx.fillText("FPS: "+FPS, 10, 20)
         ctx.closePath()
 
         //Draw ball
@@ -46,11 +46,21 @@ function drawLoop() {
         ctx.fillRect(paddleX, paddleY, paddleW, paddleH)
         ctx.closePath()
 
+        //Draw Border
+        ctx.beginPath()
+        ctx.strokeStyle = 'green'
+        ctx.strokeRect(0, 0, canvas.width-1, canvas.height-1)
+        ctx.closePath()
+
         //Edge colision check
         if (ballY + ballDY < ballRadious) {
             ballDY = -ballDY
         } else if (ballY + ballDY > canvas.height - ballRadious) {
-            gameOver = true
+            if (ballX > paddleX && ballX < paddleX + paddleW) {
+                ballDY = -ballDY
+            } else {
+                gameOver = true
+            }
         }
         if (ballX + ballDX < ballRadious || ballX + ballDX > canvas.width - ballRadious) {
             ballDX = -ballDX
