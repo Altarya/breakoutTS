@@ -1,0 +1,16 @@
+node_modules/*
+docs/party-pos.toml
+docs/time.toml
+docs/htmlserenitymap.rar
+out/
+docs/win-unpacked
+*.exe
+*.blockmap
+docs/latest.yml
+docs/builder-debug.yml
+docs/builder-effective-config.yaml
+yarn-error.log
+dist
+.vscode
+build
+.cache
