@@ -15,7 +15,7 @@
   \**********************/
 /***/ (() => {
 
-eval("\n\n//# sourceURL=webpack://breakoutts/./src/index.ts?");
+eval("var canvas = document.getElementById('canvas');\r\nvar ctx = canvas.getContext('2d');\r\nvar ballX = canvas.width / 2;\r\nvar ballY = canvas.height - 30;\r\nvar ballDX = 1;\r\nvar ballDY = -1;\r\nvar ballRadious = 10;\r\nvar FPS = 0;\r\nvar frameCount = 0;\r\nvar frameLock = false;\r\nfunction drawLoop() {\r\n    if (frameLock == false) {\r\n        frameLock = true;\r\n        //Clear Frame\r\n        ctx.clearRect(0, 0, canvas.width, canvas.height);\r\n        //FPS counter\r\n        ctx.beginPath();\r\n        ctx.font = \"20px 'Pixeloid'\";\r\n        ctx.fillStyle = 'green';\r\n        ctx.fillText(\"FPS: \" + FPS, 10, 50);\r\n        ctx.closePath();\r\n        //Draw ball\r\n        ctx.beginPath();\r\n        ctx.arc(ballX, ballY, ballRadious, 0, Math.PI * 2);\r\n        ctx.strokeStyle = 'green';\r\n        ctx.stroke();\r\n        ctx.closePath();\r\n        //Edge colision check\r\n        if (ballY + ballDY < ballRadious || ballY + ballDY > canvas.height - ballRadious) {\r\n            ballDY = -ballDY;\r\n        }\r\n        if (ballX + ballDX < ballRadious || ballX + ballDX > canvas.width - ballRadious) {\r\n            ballDX = -ballDX;\r\n        }\r\n        //Move ball\r\n        ballX += ballDX;\r\n        ballY += ballDY;\r\n        frameCount++;\r\n        frameLock = false;\r\n    }\r\n}\r\nfunction countFPS() {\r\n    FPS = frameCount;\r\n    frameCount = 0;\r\n}\r\nsetInterval(countFPS, 1000);\r\nsetInterval(drawLoop, 1000 / 60);\r\n\n\n//# sourceURL=webpack://breakoutts/./src/index.ts?");
 
 /***/ })
 

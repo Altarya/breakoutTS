@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "Pixeloid";
+    src: url(./assets/fonts/PixeloidSans-nR3g1.ttf);
+}
+
+.game {
+    font-family: 'Pixeloid';
+    color: green;
+}
