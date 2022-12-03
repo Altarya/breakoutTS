@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./docs/",
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "module": "es6",
         "target": "es5",
         "jsx": "react",
@@ -12,5 +12,8 @@
     "exclude": [
         "./submodule/",
         "./out/",
+    ],
+    "include": [
+        "external/fmodstudioapi20211html5/api/studio/lib/upstream/js"
     ]
 }

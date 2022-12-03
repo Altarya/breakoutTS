@@ -30,6 +30,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "fs": "^0.0.1-security"
   },
   "build": {
     "appId": "breakoutts.id",
