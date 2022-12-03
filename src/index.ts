@@ -24,11 +24,11 @@ const brickH = 20
 const brickPadding = 10
 const brickOffsetTop = 30
 const brickOffsetLeft = 30
-const bricks: {x: number, y: number}[][] = new Array();
+const bricks: {x: number, y: number, isAlive: boolean}[][] = new Array();
 for (let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (let r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0 };
+        bricks[c][r] = { x: 0, y: 0, isAlive: true};
     }
 }
 
@@ -70,14 +70,14 @@ function drawLoop() {
         //Draw Bricks
         for (let c = 0; c < brickColumnCount; c++) {
             for (let r = 0; r < brickRowCount; r++) {
-                const brickX = c * (brickW + brickPadding) + brickOffsetLeft;
-                const brickY = r * (brickH + brickPadding) + brickOffsetTop;
-                bricks[c][r].x = brickX
-                bricks[c][r].y = brickY
-                ctx.beginPath()
-                ctx.strokeStyle = 'green'
-                ctx.strokeRect(brickX, brickY, brickW, brickH)
-                ctx.closePath()
+                if(bricks[c][r].isAlive) {
+                    bricks[c][r].x = c * (brickW + brickPadding) + brickOffsetLeft;
+                    bricks[c][r].y = r * (brickH + brickPadding) + brickOffsetTop;
+                    ctx.beginPath()
+                    ctx.strokeStyle = 'green'
+                    ctx.strokeRect(bricks[c][r].x, bricks[c][r].y, brickW, brickH)
+                    ctx.closePath()
+                }
             }
         }
 
@@ -97,8 +97,9 @@ function drawLoop() {
         for (let c = 0; c < brickColumnCount; c++) {
             for (let r = 0; r < brickRowCount; r++) {
                 const brick = bricks[c][r]
-                if (ballX > brick.x && ballX < brick.x + brickW && ballY > brick.y && ballY < brick.y + brickH) {
+                if (ballX > brick.x && ballX < brick.x + brickW && ballY > brick.y && ballY < brick.y + brickH && brick.isAlive) {
                     ballDY = -ballDY
+                    brick.isAlive = false
                 }
             }
         }
